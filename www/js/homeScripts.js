@@ -14,7 +14,7 @@ function loginPractisis(){
 function envia(donde){
 				//location.href="index.html#/"+donde;
 					//$("#daClick").click();
-					console.clear();
+					//console.clear();
 					var lugar='';
 					//$("#fade").fadeIn("fast");
 					if(donde=='dashboard')
