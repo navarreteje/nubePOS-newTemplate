@@ -11,8 +11,9 @@
 			<script src="js/jquery.js"></script>
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 			<script src="js/indexTemplate.js"></script>
+			<script src="js/jquery-ui.min.js"></script>
 			<script src="js/jquery.mobile-1.4.2.min.js"></script>
-			<script src="js//jquery-ui.min.js"></script>
+			
 		
 			<script src="js/index.js"></script>
 			<script src="js/homeScripts.js"></script>
@@ -217,8 +218,10 @@
 		$("#logo").load(function() {
 			$("#logo").fadeIn("slow");
 			setTimeout(function(){
+				alert("In Animation");
 				$("#fade").animate({  top: "-100%"  } , 1500 , "easeOutQuint" , function(){
 						$("#contentCenterFadeArea").html('');
+						alert("End Animation");
 				});
 			},3000);
 			
