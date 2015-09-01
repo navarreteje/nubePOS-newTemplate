@@ -21,31 +21,21 @@
 			
 			
 			<div class="row"> <!-- Row Header Search.. -->
-				<div class="col-sm-2" >
-					
-				</div>
-
 				
-				<div class="col-sm-8" align="center">
+				
+				<div class="col-sm-12" align="center">
 					<div class="row"> 
 									
-						<div class="col-lg-4" align="left" >
-							<div class="dropdown" style="" >
-								  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									Todas Las Categorías
-									<span class="caret"></span>
-								  </button>
-								  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-									<li><a href="#">Action</a></li>
-									<li><a href="#">Another action</a></li>
-									<li><a href="#">Something else here</a></li>
-									<li><a href="#">Separated link</a></li>
-								  </ul>
-							</div>
+						<div class="col-md-4" align="left" >
+						
+							<div role="group" class="btn-group">
+								   <div id="includeDropCategory" style="width:90%;"></div>
+									
+								  </div>
 						</div>
-						<div class="col-lg-8" align="left">
+						<div class="col-md-8" align="left">
 							<div class="input-group" style="width:70%;">
-								<input  type="text" class="form-control" placeholder="Escriba un producto..." id="searchKeyword" >
+								<input  type="text" class="form-control" placeholder="Escriba un producto..." id="searchKeyword" onkeyUp="searchProduct($(this))">
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="button" onclick="page=0; getSearch(); return false;">Buscar</button>
 								</span>
@@ -68,12 +58,23 @@
 			</div> <!-- END Row Header Search.. -->
 			<br/>
 			<div class="row" align="center" > <!-- Row Table of products.. -->
-				<div class="col-sm-1"></div>
+				
+					<div class="col-sm-12">	
+						
+						
+  
+					
+						
+						
+					</div>
+			</div>
+					<div class="row" align="center" > <!-- Row Table of products.. -->
+				
 					<div class="col-sm-10">
 						<div id="detailDiv" style="font-size:15px;" class="table-responsive"></div>
 						<input id='totalpags' style='display:none;'/>
 					</div>
-				<div class="col-sm-1"></div>
+				
 			</div>
 					
 			<div class="row"> <!-- Row footer.. -->
@@ -114,28 +115,9 @@ function ListarProductos(){
 			   if(row.materiaprima==1)
 					checkmatprima='checked';
 				var catname='';
-			   inhtml+='\
-				<tr>\
-					<td>\
-						'+row.formulado+'\
-					</td>\
-					<td>\
-						'+row.codigo+'\
-					</td>\
-					<td>\
-						'+row.nombrec+'\
-					</td>\
-					<td style="text-align:right">\
-						'+parseFloat(row.precio).toFixed(2)+'\
-					</td>\
-					<td style="text-align:center">\
-						<input disabled type="checkbox" '+checkiva+'/>\
-					</td>\
-					<td>\
-						<span class="fa fa-edit"></span>\
-					</td>\
-				</tr>';
-			   /*<td style="text-align:center"><input disabled type="checkbox" '+checkprfinal+'/></td><td style="text-align:center"><input disabled type="checkbox" '+checkmatprima+'/></td><td><span class="fa fa-edit"></span></td></tr>';*/
+			
+				
+			
 		}
 		LlenarTablaProd(inhtml);
 		});
@@ -143,37 +125,52 @@ function ListarProductos(){
 }
 
 function LlenarTablaProd(datos){
-	$('#detailDiv').html('\
-		<table align="center" class="table" style="">\
-			<tr>\
-				<th>Nombre</th>\
-				<th>Código</th>\
-				<th>Categoría</th>\
-				<th style="text-align:right;">Precio</th>\
-				<th style="text-align:center">Aplica IVA</th>\
-				<th><span class="fa fa-cog"></span></th>\
-			</tr>\
-			'+datos+'\
-		</table>');
+
+		$('#detailDiv').html('');
+		$('#detailDiv').append(datos);
+		$("[name='my-checkbox']").bootstrapSwitch();
 }
+
 
 function ListarCategorias(){
 	var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
 	db.transaction(function(tx){
 	tx.executeSql('SELECT * FROM CATEGORIAS ORDER BY id asc;',[],function(tx,results){
 		//console.log(results.rows.length);
-		var inhtml='';
+		var inhtml='';var inhtml2="";
+		inhtml2+=' <li><a href="javascript:void(0)" categoria="" onclick="showCategory($(this))" idDB="0">Todas</a></li>';
 		for (var i=0; i < results.rows.length; i++){
 			var row=results.rows.item(i);
 			inhtml+='<option value="'+row.id+'">'+row.categoria+'</option>';
+			inhtml2+=' <li><a href="javascript:void(0)" categoria="'+row.categoria+'" onclick="showCategory($(this))" idDB="'+row.id+'">'+row.categoria+' </a></li>';
 		}
-		LlenarComboCat(inhtml);
+		
+		 LlenarComboCat(inhtml,inhtml2);
+		
+		
+		
 	});
 	},errorCB,successCB);
 }
 
-function LlenarComboCat(options){
+
+function LlenarComboCat(options,options2){
 	$('#listacategorias').append(options);
+	$("#includeDropCategory").html('\
+	\
+									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\
+									Seleccione una Categoría\
+									<span class="caret"></span>\
+								  </button>\
+								  <ul class="dropdown-menu" aria-labelledby="dropdownMenu4"  >\
+								  '+options2+'\
+								  </ul>\
+								</div>\
+		');
+		//alert(options2);
+	//$("#dropDownCategory").append('>');
+	//$('#listacategorias2').append();
+	//alert("here");
 }
 function getSearch(){
 	var filtro=$('#searchKeyword').val();
@@ -213,13 +210,45 @@ function getSearch(){
 			var checkprfinal='';
 			var checkmatprima='';
 			if(row.cargaiva==1)
-					checkiva='checked';
+					
+					checkiva2='<span class="glyphicon glyphicon-ok"> </span>'; else checkiva2='<span class="glyphicon glyphicon-remove"> </span>';  
 			if(row.productofinal==1)
 					checkprfinal='checked';
 			if(row.materiaprima==1)
 					checkmatprima='checked';
 			var catname='';
-			inhtml+='<tr><td>'+row.formulado+'</td><td>'+row.codigo+'</td><td>'+row.nombrec+'</td><td style="text-align:right">'+parseFloat(row.precio).toFixed(2)+'</td><td style="text-align:center"><input disabled type="checkbox" '+checkiva+'/></td><td><span class="fa fa-edit" style="cursor:pointer;" onclick="EditarProducto('+row.id_local+');"></span></td></tr>';
+			/*inhtml+='<tr><td>'+row.formulado+'</td><td>'+row.codigo+'</td><td>'+row.nombrec+'</td><td style="text-align:right">'+parseFloat(row.precio).toFixed(2)+'</td><td style="text-align:center"><input disabled type="checkbox" '+checkiva+'/></td><td><span class="fa fa-edit" style="cursor:pointer;" onclick="EditarProducto('+row.id_local+');"></span></td></tr>';*/
+			
+			inhtml+='\
+					<div style="cursor:default;" class="panel panel-primary" iddb="'+row.id+'" categoria="'+row.nombrec+'" codedb="'+row.codigo+'" formulado="'+row.formulado+'"  clase="listProduct">\
+						  <div class="panel-heading">\
+							<h4 class="panel-title" >'+row.formulado+'</h4>\
+						  </div>\
+						  <div class="panel-body" >\
+							<div class="row" align="center"> \
+								<div class="col-sm-2">	\
+									<img src="img/cafe.jpg" style="box-shadow:1px 1px 1px gray;" width="80" />\
+								</div>\
+								<div class="col-sm-2">	\
+									<h4><small>Código</small><br/>'+row.codigo+'</h4>\
+								</div>\
+								<div class="col-sm-2">	\
+									<h4><small>Categoría</small><br/>'+row.nombrec+'</h4>\
+								</div>\
+								<div class="col-sm-2">	\
+									<h4><small>Precio</small><br/>'+parseFloat(row.precio).toFixed(2)+'</h4>\
+								</div>\
+								<div class="col-sm-2">	\
+									<h4><small>Carga Iva</small><br/>'+checkiva2+'</h4>\
+								</div>\
+									<div class="col-sm-2">	\
+									<h3>	 <span class="fa fa-edit"></span> </h3>\
+								</div>\
+							</div>\
+						 </div>\
+					</div>\
+				';
+			
 			/*<td style="text-align:center"><input disabled type="checkbox" '+checkprfinal+'/></td><td style="text-align:center"><input disabled type="checkbox" '+checkmatprima+'/></td><td><span class="fa fa-edit" style="cursor:pointer;" onclick="EditarProducto('+row.id+');"></span></td></tr>';*/
 		}
 		LlenarTablaProd(inhtml);
@@ -258,4 +287,21 @@ $(document).keyup(function(event){
 		getSearch();
 		}
 });
+
+function searchProduct(t){
+	buscar=$.trim(t.val());
+	$('div[clase="listProduct"]').css("display" , "none");
+	if(buscar=='')$('div[clase="listProduct"]').css("display" , "block");
+	
+	$('div[clase="listProduct"][formulado*="'+buscar+'"]').fadeIn("fast");
+	
+}
+
+function showCategory(t){
+	categoria=t.attr("categoria");
+	$('div[clase="listProduct"]').css("display" , "none");
+	if(categoria=='')$('div[clase="listProduct"]').css("display" , "block");
+	$('div[clase="listProduct"][categoria*="'+categoria+'"]').fadeIn("fast");
+}
+
 </script>

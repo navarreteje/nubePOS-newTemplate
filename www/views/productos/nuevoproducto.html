@@ -17,8 +17,28 @@
 		</div>
 		
 		<div class="row" >
+		<br/>
 				<div class="col-sm-12" style="width:90%;" >
-								<p style="font-size:22px;padding-top:15px;"><a href="#" class="topcoat-button" id="scanp"><span class="ui-btn ui-icon-eye ui-btn-icon-left ui-shadow ui-corner-all" aria-hidden="true"> SCAN  </span>  </a></p>
+								<p style="font-size:22px;">
+									
+										<span class="ui-btn ui-icon-eye ui-btn-icon-left ui-shadow ui-corner-all" aria-hidden="true"> 
+											<a href="#" class="topcoat-button" id="scanp"> SCAN </a>
+										</span> 
+											
+										
+										
+								</p>
+								<div class="appp">
+								<div id="devicereadyp" class="blink" style="display:none;">
+									<p class="event listeningp">Connecting to Device</p>
+									<p class="event receivedp">Device is Ready</p>
+								</div>
+								
+							</div>
+							<script>
+								appp.initialize();
+							</script>
+							
 			</div>
 		</div>
 		
@@ -40,10 +60,10 @@
 		<br/><br/>
 		<div class="row" >
 			<div class="col-sm-3" align="left">
-				<h4> ¿Carga IVA? </h4> <input type="checkbox"  id='mprima' name="my-checkbox" style="height:30px;" checked>
+				<h4> ¿Carga IVA? </h4> <input type="checkbox"  id='coniva' name="my-checkbox" style="height:30px;" checked>
 			</div>
 			<div class="col-sm-3" align="left" >
-				<h4>¿Es inventariable?  </h4><input type="checkbox" name="my-checkbox" checked>
+				<h4>¿Es inventariable?  </h4><input type="checkbox" id="mprima" name="my-checkbox" checked>
 			</div>
 			<div class="col-sm-4"  align="left" >
 				<h4>¿Vendes este producto? </h4><input type="checkbox" id='pfinal' name="my-checkbox" checked>
@@ -62,6 +82,7 @@
 				<br/>
 				<button id='guardar' class="btn btn-primary btn-md" type='button' style="width:120px;" onclick='GuardaProducto();'>Guardar</button>
 				<br/>
+				
 			</div>
 		</div>
 	</div>
@@ -207,7 +228,7 @@ function GuardaProducto(){
 		if(nombrep!=''&&codigop!=''&&preciop!=''&&categoria!=''){
 			
 			var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
-			alert(idcategoria);
+			
 			if(idcategoria==0){
 				
 				db.transaction(function(tx){
@@ -223,7 +244,7 @@ function GuardaProducto(){
 					db.transaction(function(tx){
 					tx.executeSql('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");',[],function(tx,results){
 					console.log("prod:"+results.insertId);
-					envia("nuevoproducto");
+					//envia("nuevoproducto");
 					});
 					},errorCB,successCB);
 					});
@@ -240,6 +261,7 @@ function GuardaProducto(){
 				});
 				},errorCB,successCB);
 			}
+			alerta("<i> Producto guardado con éxito </i>");
 		}else{
 			$('#jsalert').html("Por favor complete todos los datos.");
 			setTimeout(function(){$('#jsalert').effect('highlight',{color:'white'},1000);},500);
@@ -261,11 +283,11 @@ function ActualizarProducto(){
 	var prfinal=0;
 	var matprima=0;
 	
-	if($('#coniva').prop('checked'))
+	if($('#coniva').is(':checked'))
 		iva=1;
-	if($('#mprima').prop('checked'))
+	if($('#mprima').is(':checked'))
 		matprima=1;
-	if($('#pfinal').prop('checked'))
+	if($('#pfinal').is(':checked'))
 		prfinal=1;
 		
 	if(nombrep!=''&&codigop!=''&&preciop!=''&&categoria!=''){

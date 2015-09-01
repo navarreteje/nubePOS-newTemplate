@@ -5,10 +5,12 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 			<title>NubePOS</title>
 			<link rel="shortcut icon" href="favicon.ico">
+			<link rel="stylesheet" href="css/bootstrap.min.css">
 			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 			<link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css">
 			<link rel="stylesheet" href="css/jqm-demos.css">
 			<script src="js/jquery.js"></script>
+			<script src="js/bootstrap.min.js"></script>
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 			<script src="js/indexTemplate.js"></script>
 			<script src="js/jquery-ui.min.js"></script>
@@ -19,13 +21,14 @@
 			<script src="js/homeScripts.js"></script>
 			
 			<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
-		
+			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+			
 			
 			
 			<!-- Pages includes libraries -->
 			<script src="js/raphael-min.js"></script>
 			<script src="js/morris.min.js"></script>
-			<link rel="stylesheet" href="css/bootstrap.min.css">
+		
 				<link href="css/fonts.css" rel="stylesheet" type="text/css">
 			<!-- needs images, font... therefore can not be part of ui.css -->
 			<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -60,8 +63,18 @@
 		<div data-role="page" class="jqm-demos ui-page ui-page-theme-a ui-page-footer-fixed ui-page-active" data-quicklinks="true" data-url="" tabindex="0" style="padding-bottom: 62px; min-height: 541px;" style="display:none;">
 		
 		
-		<a href="#" data-ajax="false" class="jqm-deeplink jqm-open-quicklink-panel ui-icon-carat-l ui-alt-icon">Quick Links</a>
-		
+		<!--<a href="#" data-ajax="false" class="jqm-deeplink jqm-open-quicklink-panel ui-icon-carat-l ui-alt-icon">Quick Links</a>-->
+		<div style="width:100%;height:0px;background:rbga(0,0,0,0.5);text-align:center" id="contentMessages">
+			<table width="100%" height="100%" cellpadding="0">
+				<tr>
+					<td valign="center" align="center">
+						<div id="message">
+							Messagees
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 		
 		
 			<div data-role="panel" class="jqm-nav-panel jqm-quicklink-panel ui-panel ui-panel-position-right ui-panel-display-overlay ui-panel-closed ui-body-a ui-panel-animate" data-position="right" data-display="overlay" data-theme="a">
@@ -75,10 +88,10 @@
 					</div>
 			</div>
 
-						<div data-role="header" style="border-top:4px solid #00B1D9; " class="jqm-header ui-header ui-bar-inherit" role="banner">
-							<h3 class="ui-title" role="heading" aria-level="1"><a href="../" title="jQuery Mobile Demos home" class="ui-link"><img src="https://www.practisis.net/page/images/logo.png" alt="jQuery Mobile"></a></h3>
+						<div align="left" data-role="header" style="border-top:4px solid #00B1D9; " class="jqm-header ui-header ui-bar-inherit" role="banner">
+							<h3 class="ui-title" role="heading" aria-level="1" style="margin:0px;margin-left:50px;text-align:left;" ><a href="../" title="jQuery Mobile Demos home" class="ui-link"><img src="https://www.practisis.net/page/images/logo.png" alt="jQuery Mobile"></a></h3>
 							
-							<a href="#" class="jqm-navmenu-link ui-nodisc-icon ui-alt-icon ui-btn-left ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all" data-role="button" role="button"> Menu</a>
+							<a href="#" id="menuClickeable" class="jqm-navmenu-link ui-nodisc-icon ui-alt-icon ui-btn-left ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all" data-role="button" role="button"> Menu</a>
 							
 						</div><!-- /header -->
 						<script type="text/javascript" src="cordova.js"></script>    
@@ -218,10 +231,8 @@
 		$("#logo").load(function() {
 			$("#logo").fadeIn("slow");
 			setTimeout(function(){
-				alert("In Animation");
 				$("#fade").animate({  top: "-100%"  } , 1500 , "easeOutQuint" , function(){
 						$("#contentCenterFadeArea").html('');
-						alert("End Animation");
 				});
 			},3000);
 			

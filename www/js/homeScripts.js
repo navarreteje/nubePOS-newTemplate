@@ -1,3 +1,13 @@
+function alerta(text){
+	$("#message").html(text);
+	$( "body" ).animate( { scrollTop : 0});
+	$("#contentMessages").animate({ height : "40px" },function(){
+		setTimeout(function(){
+			$("#contentMessages").animate({ height : "0px" });
+		},3000);
+	});
+	
+}
 function loginPractisis(){
 		
 		$('#btnvalida2').html="<img src='images/loader.gif' width='20px'/>";
@@ -10,8 +20,10 @@ function loginPractisis(){
 			}
 		});
 	}
-	
+	var contCarga=0;
 function envia(donde){
+		contCarga++;
+		if(contCarga > 1) { contCarga=0; ;return; }
 				//location.href="index.html#/"+donde;
 					//$("#daClick").click();
 					//console.clear();
@@ -36,12 +48,14 @@ function envia(donde){
 					lugar="views/cloud/indexCloud.html";
 					//alert(lugar);
 					if(!lugar) lugar="404.html";
+					
 					$('#main').load(lugar,function(){
 					//$(".modal-backdrop").fadeOut();
 						//$("#fade").fadeOut("fast");
 						//alert("here");
 						DOMOnTap();
 					});
+					//$("#menuClickeable").click();
 					//$('#myModal').delay(1500).modal('hide');
 					/*$('#content').load(lugar,function(){
 						$('#myModal').fadeOut('fast');
