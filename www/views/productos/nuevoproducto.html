@@ -48,13 +48,26 @@
 		
 		<div class="row" style="">
 			<div class="col-md-10" >
-				<h4>Categoría </h4> 
+				<h4>Categoría </h4>
 				<input style="width:90%;" class="form-control" type="text" autofocus="" placeholder="Ingrese aquí su categoría" id="search-renderitem" name="search-renderitem" onkeydown='verbusquedacateg();'/>
 			</div>
-			
+
 			<div class="col-md-2" align="left">
 			<h4> Precio  </h4>
 				<input style="width:90%;" class="form-control" type="number" autofocus=""  placeholder="Precio sin imp " name='precioproducto' id='precioproducto' onkeypress="return soloNumerosprecio(event)">
+			</div>
+		</div>
+
+        <div class="row" style="">
+			<div class="col-md-5" >
+				<h4>Costo </h4>
+				<input style="width:90%;" class="form-control" type="text" autofocus="" placeholder="Ingrese su Costo" id="costo" name="costo" onkeypress="return soloNumerosprecio(event)" value="0"/>
+			</div>
+            <div class="col-md-5" >
+				<h4>Cantidad </h4>
+				<input style="width:90%;" class="form-control" type="text" autofocus="" placeholder="Ingrese su Cantidad" id="cantidad" name="cantidad" onkeypress="return soloNumerosprecio(event)" value="0"/>
+			</div>
+			<div class="col-md-2" align="left">
 			</div>
 		</div>
 		<br/><br/>
@@ -214,9 +227,17 @@ function GuardaProducto(){
 		var preciop=$('#precioproducto').val();
 		var categoria=$('#search-renderitem').val();
 		var idcategoria=$('#idcategoria').val();
+        var costo=$('#costo').val();
+        var canti=$('#cantidad').val();
 		var iva=0;
 		var prfinal=0;
 		var matprima=0;
+
+        timeSpanCat=getTimeSpan();
+
+        var fechaaux = new Date();
+		var fecha = fechaaux.getTime();
+		//alert(timeSpanCat);
 		
 		if($('#coniva').prop('checked'))
 			iva=1;
@@ -228,23 +249,25 @@ function GuardaProducto(){
 		if(nombrep!=''&&codigop!=''&&preciop!=''&&categoria!=''){
 			
 			var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
-			
+
 			if(idcategoria==0){
 				
 				db.transaction(function(tx){
-					
-					timeSpanCat=getTimeSpan();
-					//alert(timeSpanCat);
 				
 				tx.executeSql('INSERT INTO CATEGORIAS(categoria,activo,existe,timespan) SELECT "'+categoria+'",1,0,'+timeSpanCat+' WHERE NOT EXISTS(SELECT 1 FROM CATEGORIAS WHERE categoria = "'+categoria+'");',[],function(tx,results){
 					$('#idcategoria').val(results.insertId);
 					console.log("categ:"+results.insertId);
 					idcategoria=$('#idcategoria').val();
-						console.log('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");');
+						console.log('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan,ppq) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+','+costo+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");');
 					db.transaction(function(tx){
-					tx.executeSql('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");',[],function(tx,results){
+					tx.executeSql('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan,ppq) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+','+costo+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");',[],function(tx,results){
 					console.log("prod:"+results.insertId);
 					//envia("nuevoproducto");
+
+                    tx.executeSql('INSERT INTO CARDEX (id_formulado,cantidad,descripcion,precio_unidad,fecha,ppq_real,iva,timespan) SELECT '+results.insertId+','+canti+',"Ingreso al cardex",'+costo+','+fecha+','+costo+','+iva+','+timeSpanCat,[],function(tx,resultsc){
+					    console.log('INSERT INTO CARDEX (id_formulado,cantidad,descripcion,precio_unidad,fecha,ppq_real,iva,timespan) SELECT '+results.insertId+','+canti+',"Ingreso al cardex",'+costo+','+fecha+','+costo+','+iva+','+timeSpanCat);
+					});
+
 					});
 					},errorCB,successCB);
 					});
@@ -255,8 +278,12 @@ function GuardaProducto(){
 				
 				db.transaction(function(tx){
 				timeSpan=getTimeSpan();
-				tx.executeSql('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpan+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");',[],function(tx,results){
-				console.log("prod:"+results.insertId);
+				tx.executeSql('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan,ppq) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpan+','+costo+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");',[],function(tx,results){
+                console.log('INSERT INTO PRODUCTOS(id,formulado,codigo,precio,categoriaid,cargaiva,productofinal,materiaprima,timespan,ppq) SELECT 0,"'+nombrep+'","'+codigop+'","'+preciop+'",'+idcategoria+','+iva+','+prfinal+','+matprima+','+timeSpanCat+','+costo+' WHERE NOT EXISTS(SELECT 1 FROM PRODUCTOS WHERE formulado like "'+nombrep+'" or codigo like "'+codigop+'");');
+                //console.log("prod:"+results.insertId);
+                    tx.executeSql('INSERT INTO CARDEX (id_formulado,cantidad,descripcion,precio_unidad,fecha,ppq_real,iva,timespan) SELECT '+results.insertId+','+canti+',"Ingreso al cardex",'+costo+','+fecha+','+costo+','+iva+','+timeSpanCat,[],function(tx,resultsc){
+					    console.log('INSERT INTO CARDEX (id_formulado,cantidad,descripcion,precio_unidad,fecha,ppq_real,iva,timespan) SELECT '+results.insertId+','+canti+',"Ingreso al cardex",'+costo+','+fecha+','+costo+','+iva+','+timeSpanCat);
+					});
 				envia("nuevoproducto");
 				});
 				},errorCB,successCB);

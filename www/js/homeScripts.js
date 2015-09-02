@@ -38,6 +38,8 @@ function envia(donde){
 					lugar="views/productos/listaproductos.html";
 					if(donde=='nuevoproducto')
 					lugar="views/productos/nuevoproducto.html";
+                    if(donde=='inventario')
+					lugar="views/productos/inventarioproductos.html";
 					if(donde=='listaclientes')
 					lugar="views/clientes/listaclientes.html";
 					if(donde=='nuevocliente')
