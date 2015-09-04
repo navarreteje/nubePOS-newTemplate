@@ -188,6 +188,33 @@
 <script>
 DataAutocomplete();
 var datoscateg='';
+	if(editarProductoID) {
+		leerProducto();
+	}
+	
+	function leerProducto(){
+	
+		var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
+		db.transaction(function(tx){
+		tx.executeSql('SELECT * FROM PRODUCTOS WHERE timespan=?',[editarProductoID],function(tx,results){
+		
+			for (var i=0; i < results.rows.length; i++){
+				var row=results.rows.item(i);
+				$("#nombreproducto").val(row.formulado);
+				$("#titulonuevopr").html("Editar <i>" + row.formulado + "</i>");
+				$("#codigoproducto").val(row.codigo);
+				$("#precioproducto").val(row.precio);
+				$("#search-renderitem").val(row.categoriaid);
+				$("#idcategoria").val(row.categoriaid);
+				if(row.cargaiva==0) $("#coniva").click();
+				if(row.productofinal==0) $("#pfinal").click();
+				if(row.materiaprima==0) $("#mprima").click();
+				editarProductoID=0;
+			}
+			
+		});
+		},errorCB,successCB);	
+	}
 function DataAutocomplete(){
 	var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
 	db.transaction(function(tx){
@@ -300,7 +327,8 @@ function GuardaProducto(){
 }
 
 function ActualizarProducto(){
-	var idproducto=$('#idproducto').val();
+	var idproducto=editarProductoID;//$('#idproducto').val();
+	//editarProductoID=0;
 	var nombrep=$('#nombreproducto').val();
 	var codigop=$('#codigoproducto').val();
 	var preciop=$('#precioproducto').val();

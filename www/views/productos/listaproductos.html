@@ -97,32 +97,6 @@ var page=0;
 ListarCategorias();
 getSearch();
 
-function ListarProductos(){
-	var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
-	db.transaction(function(tx){
-	tx.executeSql('SELECT p.*,c.categoria as nombrec FROM PRODUCTOS p,CATEGORIAS c WHERE p.categoriaid=c.id ORDER BY p.formulado ASC LIMIT 0,15;',[],function(tx,results){
-		//console.log(results.rows.length);
-		var inhtml='';
-		for (var i=0; i < results.rows.length; i++){
-			   var row = results.rows.item(i);
-			   var checkiva='';
-			   var checkprfinal='';
-			   var checkmatprima='';
-			   if(row.cargaiva==1)
-					checkiva='checked';
-			   if(row.productofinal==1)
-					checkprfinal='checked';
-			   if(row.materiaprima==1)
-					checkmatprima='checked';
-				var catname='';
-			
-				
-			
-		}
-		LlenarTablaProd(inhtml);
-		});
-    },errorCB,successCB);
-}
 
 function LlenarTablaProd(datos){
 
@@ -186,7 +160,7 @@ function getSearch(){
 	db.transaction(function(tx){
 		tx.executeSql('SELECT p.*,c.categoria as nombrec FROM PRODUCTOS p,CATEGORIAS c WHERE '+queryextra+' and p.categoriaid=c.id ORDER BY p.formulado asc',[],function(tx,result){
 			$('#paginacion').html('');
-			var npags=Math.ceil(result.rows.length/15);
+			var npags=Math.ceil(result.rows.length/55);
 			$('#totalpags').val(npags);
 			$('#paginacion').append("<li onclick='CambiarPagina(-1);'><span class='enabled' id='atras'>&laquo;</span></li>");
 			for(var j=0;j<npags;j++){
@@ -201,9 +175,12 @@ function getSearch(){
 	
 	
 	db.transaction(function(tx){
-	tx.executeSql('SELECT p.*,c.categoria as nombrec FROM PRODUCTOS p,CATEGORIAS c WHERE '+queryextra+' and p.categoriaid=c.id ORDER BY p.formulado desc LIMIT '+desde+',15;',[],function(tx,results){
+	//WHERE '+queryextra+' and p.categoriaid=c.id
+	//tx.executeSql(' SELECT p.*,c.categoria as nombrec FROM PRODUCTOS p,CATEGORIAS c  ORDER BY p.formulado desc ',[],function(tx,results){
+	tx.executeSql(' SELECT p.*, c.categoria as cat , c.timespan as timespancat FROM PRODUCTOS AS p LEFT JOIN CATEGORIAS AS c ON p.categoriaid = c.id ',[],function(tx,results){
 		//console.log(results);
 		var inhtml='';
+		if(results.rows.length==0) alerta("Sin productos");
 		for (var i=0; i < results.rows.length; i++){
 			var row = results.rows.item(i);
 			var checkiva='';
@@ -233,7 +210,7 @@ function getSearch(){
 									<h4><small>Código</small><br/>'+row.codigo+'</h4>\
 								</div>\
 								<div class="col-sm-2">	\
-									<h4><small>Categoría</small><br/>'+row.nombrec+'</h4>\
+									<h4><small>Categoría</small><br/>'+row.cat+'</h4>\
 								</div>\
 								<div class="col-sm-2">	\
 									<h4><small>Precio</small><br/>'+parseFloat(row.precio).toFixed(2)+'</h4>\
@@ -242,7 +219,7 @@ function getSearch(){
 									<h4><small>Carga Iva</small><br/>'+checkiva2+'</h4>\
 								</div>\
 									<div class="col-sm-2">	\
-									<h3>	 <span class="fa fa-edit"></span> </h3>\
+									<h3>	 <span class="fa fa-edit" onclick="editProduct('+row.timespan+')"></span> </h3>\
 								</div>\
 							</div>\
 						 </div>\
@@ -256,6 +233,10 @@ function getSearch(){
 	},errorCB,successCB);
 }
 
+function editProduct(id){
+	editarProductoID=id;
+	envia("nuevoproducto");
+}
 function CambiarPagina(arg){
 	//console.log($('#totalpags').val());
 	if(arg==-1){

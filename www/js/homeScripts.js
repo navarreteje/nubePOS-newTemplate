@@ -22,6 +22,7 @@ function loginPractisis(){
 	}
 	var contCarga=0;
 function envia(donde){
+	
 		contCarga++;
 		if(contCarga > 1) { contCarga=0; ;return; }
 				//location.href="index.html#/"+donde;
@@ -31,7 +32,7 @@ function envia(donde){
 					//$("#fade").fadeIn("fast");
 					if(donde=='dashboard')
 					lugar="views/dashboard.html";
-					if(donde=='nubepos/nubepos/')
+					if(donde=='puntodeventa')
 					lugar="views/nubepos/nubepos.html";
 						//lugar='views/clientes/listaclientes.html';
 					if(donde=='listaproductos')
@@ -40,8 +41,7 @@ function envia(donde){
 					lugar="views/productos/nuevoproducto.html";
                     if(donde=='inventario')
 					lugar="views/productos/inventarioproductos.html";
-					if(donde=='listaclientes')
-					lugar="views/clientes/listaclientes.html";
+					if(donde=='listadeclientes'){				lugar="views/clientes/listaclientes.html"; }
 					if(donde=='nuevocliente')
 					lugar="views/clientes/nuevocliente.html";
 					if(donde=='historial')
