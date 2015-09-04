@@ -19,10 +19,10 @@
 		<div class="row" >
 		<br/>
 				<div class="col-sm-12" style="width:90%;" >
-								<p style="font-size:22px;">
+								<!--<p style="font-size:22px;">
 									
 										<span class="ui-btn ui-icon-eye ui-btn-icon-left ui-shadow ui-corner-all" aria-hidden="true"> 
-											<a href="#" class="topcoat-button" id="scanp"> SCAN </a>
+											<button class="topcoat-button" id="scanp"> SCAN </button>
 										</span> 
 											
 										
@@ -32,11 +32,17 @@
 								<div id="devicereadyp" class="blink" style="display:none;">
 									<p class="event listeningp">Connecting to Device</p>
 									<p class="event receivedp">Device is Ready</p>
+								</div>-->
+								<div class="app">
+									<div id="deviceready" class="blink" style="display:none;">
+										<p class="event listening">Connecting to Device</p>
+										<p class="event received">Device is Ready</p>
+									</div>
+									 <div class='btn-lg btn-success' style='margin-top:10px;' type='button' id='scan'>SCAN&nbsp;<span class='fa fa-barcode'></span></div>
 								</div>
-								
 							</div>
 							<script>
-								appp.initialize();
+								app.initialize();
 							</script>
 							
 			</div>
