@@ -1,3 +1,4 @@
+var editarProductoID;
 function alerta(text){
 	$("#message").html(text);
 	$( "body" ).animate( { scrollTop : 0});
