@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.practisis.tweetsplit" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>NubePOSJosue Jquery Mobile</name>
+    <name>NubePOS Template 3</name>
     <description>
-        POS Móvil 2 Jquery Mobile
+        Cool Slide menu 1
     </description>
     <author email="info@practisis.com" href="http://practisis.net">
-        Practisis S.A. 2 Jquery Mobile
+        Practisis S.A. 2 simple menu
     </author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
