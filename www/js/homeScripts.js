@@ -21,21 +21,18 @@ function loginPractisis(){
 			}
 		});
 	}
-	var contCarga=0;
+
 function envia(donde){
 	
-		contCarga++;
-		if(contCarga > 1) { contCarga=0; ;return; }
-				//location.href="index.html#/"+donde;
-					//$("#daClick").click();
-					//console.clear();
+		$("#simple-menu").click();
+
 					var lugar='';
-					//$("#fade").fadeIn("fast");
+				
 					if(donde=='dashboard')
-					lugar="views/dashboard.html";
+					lugar="views/dashboard/dashboard.html";
 					if(donde=='puntodeventa')
 					lugar="views/nubepos/nubepos.html";
-						//lugar='views/clientes/listaclientes.html';
+					
 					if(donde=='listaproductos')
 					lugar="views/productos/listaproductos.html";
 					if(donde=='nuevoproducto')
@@ -56,8 +53,11 @@ function envia(donde){
 					//$(".modal-backdrop").fadeOut();
 						//$("#fade").fadeOut("fast");
 						//alert("here");
+						
+						
 						DOMOnTap();
 					});
+					
 					//$("#menuClickeable").click();
 					//$('#myModal').delay(1500).modal('hide');
 					/*$('#content').load(lugar,function(){
