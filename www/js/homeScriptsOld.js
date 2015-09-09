@@ -24,7 +24,7 @@ function loginPractisis(){
 
 function envia(donde){
 	
-		
+		$("#simple-menu").click();
 
 					var lugar='';
 				
@@ -54,7 +54,6 @@ function envia(donde){
 						//$("#fade").fadeOut("fast");
 						//alert("here");
 						
-						$("#simple-menu").click();
 						
 						DOMOnTap();
 					});
