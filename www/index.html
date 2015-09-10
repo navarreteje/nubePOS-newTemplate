@@ -85,64 +85,66 @@
 			</div>
 
 
-<script>
-$(document).ready(function() {
-  $('#simple-menu').sidr();
-  $('#responsive-menu-button').sidr();
-});
-</script>
-    <!-- Include jQuery -->
-    <!--<script src="js/jquery.js"></script>-->
-    <!-- Include the Sidr JS -->
-    <script src="jquery.sidr.min.js"></script>
-	
-			<div style="overflow:hidden;position:absolute;left:0px;top:0px;width:100%;height:100%;background:rgba(0,0,0,1);z-index:9000;display:block;" id="fade">
-				<table width="100%" height="100%" cellpadding="0" cellspacing="0" >
-					<tr>
-						<td valign="center" align="center" >
-							<div id="contentCenterFadeArea">
-								<img src="" id="logo" style="display:none;">
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		
-		
-		
-
-
-<script type="text/javascript" src="barcodescanner.js"></script>
-<script type="text/javascript" src="js/jsscan.js"></script>
-<script type="text/javascript" src="js/jsscanprod.js"></script>
-<script src="js/hammer.js" ></script>
-
-		<!-- Josue Includes -->
-		
-		<!--<link href="slide/bootstrap.css" rel="stylesheet">-->
-		<link href="slide/bootstrap-switch.css" rel="stylesheet">
-		<script src="slide/bootstrap-switch.js"></script>
-		<link href="slide/bootstrap-switch.css" rel="stylesheet">
-		<script src="slide/highlight.js"></script>
-		<!--<script src="slide/js/bootstrap-switch.js"></script>--->
-<style>
-	.col-sm-offset-1{
-			margin:0px;
-	}
-</style>
-<script>
-	startAnimation();
-	function startAnimation(){
-		
-		$("#logo").load(function() {
-			$("#logo").fadeIn("slow");
-			setTimeout(function(){
-				$("#fade").animate({  top: "-100%", display : "none"  } , 1500 , "easeOutQuint" , function(){
-				
-						$("#contentCenterFadeArea").html('');
-				});
-			},3000);
+		<script>
+		$(document).ready(function() {
+		  $('#simple-menu').sidr();
+		  $('#responsive-menu-button').sidr();
+		});
+		</script>
+		    <!-- Include jQuery -->
+		    <!--<script src="js/jquery.js"></script>-->
+		    <!-- Include the Sidr JS -->
+		    <script src="jquery.sidr.min.js"></script>
 			
-		}).attr('src', 'img/logo.png');
-	}
-</script>
+					<div style="overflow:hidden;position:absolute;left:0px;top:0px;width:100%;height:100%;background:rgba(0,0,0,1);z-index:9000;display:block;" id="fade">
+						<table width="100%" height="100%" cellpadding="0" cellspacing="0" >
+							<tr>
+								<td valign="center" align="center" >
+									<div id="contentCenterFadeArea">
+										<img src="" id="logo" style="display:none;">
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				
+				
+				
+		
+		
+		<script type="text/javascript" src="barcodescanner.js"></script>
+		<script type="text/javascript" src="js/jsscan.js"></script>
+		<script type="text/javascript" src="js/jsscanprod.js"></script>
+		<script src="js/hammer.js" ></script>
+		
+				<!-- Josue Includes -->
+				
+				<!--<link href="slide/bootstrap.css" rel="stylesheet">-->
+				<link href="slide/bootstrap-switch.css" rel="stylesheet">
+				<script src="slide/bootstrap-switch.js"></script>
+				<link href="slide/bootstrap-switch.css" rel="stylesheet">
+				<script src="slide/highlight.js"></script>
+				<!--<script src="slide/js/bootstrap-switch.js"></script>--->
+		<style>
+			.col-sm-offset-1{
+					margin:0px;
+			}
+		</style>
+		<script>
+			startAnimation();
+			function startAnimation(){
+				
+				$("#logo").load(function() {
+					$("#logo").fadeIn("slow");
+					setTimeout(function(){
+						$("#fade").animate({  top: "-100%", display : "none"  } , 1500 , "easeOutQuint" , function(){
+						
+								$("#contentCenterFadeArea").html('');
+						});
+					},3000);
+					
+				}).attr('src', 'img/logo.png');
+			}
+		</script>
+	</body>
+</html>
