@@ -159,8 +159,12 @@
 	  <div id="JSONCategoriasLocal"  style="color:green;display:none;"></div>
 	  <div id="JSONCategoriasNube"  style="color:gray;display:none;"></div>
 	  <!-- STEP 2 --->
-	  <div id="JSONclientes"></div>
-	  <div id="JSONfacturas"></div>
+		<div id="JSONfacturas" style="color:red;display:none;"></div>
+	  <!-- STEP 2 --->
+	  <div id="JSONclientesNube" style="color:red;display:none;"></div>
+	  <div id="JSONclientesLocal" style="color:red;display:none;" ></div>
+	  
+	  
 	  
 	  <!--
 	<div  style="display:none;background: rgba(0,0,0 0.8) none repeat scroll 0% 0%; width: 60%; height: auto; position:; z-index: 20000; text-align: center;margin:0 auto;margin-top:30px;" id='cuentasSinc'>
@@ -489,9 +493,9 @@
 									$('#idcategoria').val(results.insertId);
 									console.log("categ:"+results.insertId);
 									//alert(localCategoriaID(categoriaid));
-									idcategoria=results.insertId;//$('#idcategoria').val();
-									if(!idcategoria) idcategoria=localCategoriaID(categoriaid);//categoriaid;
-									
+									//idcategoria=results.insertId;//$('#idcategoria').val();
+									 idcategoria=localCategoriaID(categoriaid);//categoriaid;
+									//if(!idcategoria)
 									if( !cargaiva )  cargaiva = '0';
 									if( !productofinal )  productofinal = '0';
 									if( !materiaprima )  materiaprima = '0';
@@ -669,12 +673,221 @@
 			
 		}
 		globalContCatFaltantesNube=-1;
+		function sincronizarFacturas(){
+			//alert("Here is my time");
+			$('#theProgress').width("50%");
+			$("#txtSincro").html('<i>Sincronizando Facturas</i>');
+			sincronizarClientes();
+		}
+		
+		
+		
+		/*Sincronizacion Clientes STEP 3*/
+		function sincronizarClientes(){
+			$('#theProgress').width("75%");
+			$("#txtSincro").html('<i>Sincronizando Clientes</i>');
+				var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
+				db.transaction(function(tx){
+					tx.executeSql('SELECT * FROM CLIENTES',[],function(tx,results){
+					jsonClientesLocal='{ "JsonClientes" : [ ';
+						for (var i=0; i <= results.rows.length-1; i++){
+								var row = results.rows.item(i);
+								var nombre = row.nombre;
+								var cedula = row.cedula;
+								var email = row.email;
+								var telefono = row.telefono;
+								var timespan = row.timespan;
+								var direccion = row.direccion;
+								jsonClientesLocal+=' { "timespan" : "'+timespan+'" , "nombre" : "'+nombre+'" , "cedula" : "'+cedula+'" , "email" : "'+email+'" , "telefono" : "'+telefono+'", "direccion" : "'+direccion+'"  },';
+								}
+								jsonClientesLocal= jsonClientesLocal.substring(0,jsonClientesLocal.length-1);
+								jsonClientesLocal +=']}';
+								$("#JSONclientesLocal").html(jsonClientesLocal);
+								compararJsonLocalClientes(jsonClientesLocal);
+								//$("#JSONclientesLocal").html();
+					});
+				},errorCB,successCB);
+									
+									
+			
+			
+		}
+		
+		
+		var arrayFaltanteClienteLocal= new Array();
+		function compararJsonLocalClientes(json){
+		 objLocal=$.parseJSON(json);
+		 jsonNube=$("#JSONclientesNube").text();
+		 objNube=$.parseJSON(jsonNube);
+		 
+		 for(j=0; j<= (objLocal.JsonClientes.length-1); j++){
+			element=objLocal.JsonClientes[j];
+			currentClientLocal=element.timespan;
+			var matchClient=false;
+			var  matchClientCedula=false;
+			for( k=0;k<=(objNube.Clientes.length -1); k++){
+				currentClientNube = objNube.Clientes[k].timespan;
+				if(currentClientLocal == currentClientNube){
+					//alert( currentClientNube + "<>" + currentClientNube);
+					matchClient=true;
+				}
+			}
+			//alert(matchClient);
+			if(matchClient==false){
+				
+				arrayFaltanteClienteLocal[arrayFaltanteClienteLocal.length] = currentClientLocal;
+				console.log(arrayFaltanteClienteLocal);
+				console.log("falta el cliente>>" + element.nombre);
+			}
+		 }
+		 
+		 agregarClientesFaltanteLocal();
+		}
+		var contFaltanteClienteLocal=-1;
+		function agregarClientesFaltanteLocal(){
+			contFaltanteClienteLocal++;
+			if(contFaltanteClienteLocal > (arrayFaltanteClienteLocal.length-1) ){
+			compararJsonNubeClientes();
+			//alert("Fin de clientes");
+			contFaltanteClienteLocal=-1;
+			return;
+			}
+			if(arrayFaltanteClienteLocal.length!=-1){
+				/*Json Detect Element of array*/
+				var nombre='';var email=''; var telefono='';var cedula='';
+				var currentClientPost=arrayFaltanteClienteLocal[contFaltanteClienteLocal];
+				 objLocal=$.parseJSON($("#JSONclientesLocal").text());
+				for(j=0; j<= (objLocal.JsonClientes.length-1); j++){
+					element=objLocal.JsonClientes[j];
+					currentClientLocal=element.timespan;
+					if(currentClientLocal == currentClientPost ){
+						nombre = element.nombre;
+						email = element.email;
+						cedula = element.cedula;
+						telefono = element.telefono;
+						direccion = element.direccion;
+						
+					}
+				}
+				
+				
+				
+				//alert(currentClientPost);
+				$.post('https://www.practisis.net/nubeposboot/www/ajax/addNewClient.php', { 
+					dbID : empresa ,
+					nombre : nombre,
+					timespan : currentClientLocal,
+					email : email,
+					telefono : telefono,
+					cedula : cedula,
+					direccion : direccion
+					}).done(function(data){
+					//alert(data);
+					agregarClientesFaltanteLocal();
+				});
+			}
+			
+		}
+		var arrayClientesFaltanteNube=new Array();
+		function compararJsonNubeClientes(){
+			 objLocal=$.parseJSON($("#JSONclientesLocal").text());
+			 objNube=$.parseJSON($("#JSONclientesNube").text());
+			 for(i=0; i<= (objNube.Clientes.length-1); i++ ) {
+				match=false;
+				//matchCedula=false;
+				currentClientNube=  objNube.Clientes[i].timespan;
+				currentClientNubeCedula=  objNube.Clientes[i].cedula;
+				for(j=0; j<= (objLocal.JsonClientes.length-1); j++ ) {
+					currentClientLocal=objLocal.JsonClientes[j].timespan;
+					currentClientLocalCedula=objLocal.JsonClientes[j].cedula;
+					if( currentClientNube == currentClientLocal ) {match=true; }
+				//	if( currentClientLocalCedula == currentClientNubeCedula){matchCedula=true;}
+					
+				}
+				
+				if(!match){
+				
+					arrayClientesFaltanteNube[arrayClientesFaltanteNube.length]=i;
+					console.log( currentClientNube + ">Falta Cliente nube" );
+				}
+				
+			 }
+			 agregarClientesFaltanteNube();
+		}
+		
+		var contFaltanteClienteNube=-1;
+		var rebelTimeSpan=0;
+		function agregarClientesFaltanteNube(){
+			contFaltanteClienteNube++;
+			if(contFaltanteClienteNube > (arrayClientesFaltanteNube.length-1) ){
+				//alert("Fin clientes");
+				$("#theProgress").width("100%");
+				return;
+			}
+			
+			
+			
+			
+				var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
+				db.transaction(function(tx){
+				currentIndex= arrayClientesFaltanteNube[contFaltanteClienteNube] ;
+				objNube=$.parseJSON($("#JSONclientesNube").text());
+				for(i=0; i<= (objNube.Clientes.length-1); i++ ) {
+					match=false;
+					currentClientNube=  objNube.Clientes[i].timespan;
+					if(i==currentIndex){
+					//alert(objNube.Clientes[i].nombre);
+					nombre = objNube.Clientes[i].nombre;
+					cedula = objNube.Clientes[i].cedula;
+					telefono = objNube.Clientes[i].telefono;
+					direccion = objNube.Clientes[i].direccion;
+					email = objNube.Clientes[i].email;
+					if(currentClientNube != '') {
+						timespan = currentClientNube; 
+						console.log("con timespan>>" + nombre + "<<" + timespan);
+						rebelTimeSpan=timespan;
+						}else{
+						 timespan = getTimeSpan();
+						 rebelTimeSpan = timespan;
+						 console.log("Sin timespan>>" + nombre + "<<" + timespan );
+					}
+					idCliente= objNube.Clientes[i].id;
+					}
+				}
+					//alert(rebelTimeSpan);
+					//alert(rebelTimeSpan);
+				
+								tx.executeSql('INSERT INTO CLIENTES (nombre,cedula,telefono,direccion,email,timespan,existe) VALUES(?,?,?,?,?,?,?) ',[nombre,cedula,telefono,direccion,email,rebelTimeSpan,0],function(tx,results){
+								
+												$.post('https://www.practisis.net/nubeposboot/www/ajax/updateClient.php', { 
+													dbID : empresa ,
+													nombre : nombre,
+													timespan : rebelTimeSpan,
+													idCliente : idCliente
+													}).done(function(data){
+														alert(data);
+														agregarClientesFaltanteNube();
+													});
+												
+												
+										});
+									},errorCB,successCB);
+									
+			
+			
+		}
+		
+		/*Fin Sincronizacion Clientes STEP 3*/
+		
+		
+		
 		function agregarCategoriasFalatantesNube(){
 			globalContCatFaltantesNube++;
 			if(globalContCatFaltantesNube > (arrayCategoriasFaltantesNube.length-1) ){
 			
 			/*Go to section 2*/
 			//alert("end of bucle");
+			sincronizarFacturas();
 			}else{
 				
 				txt= arrayCategoriasFaltantesNube[globalContCatFaltantesNube] ;
@@ -740,7 +953,9 @@
 					var arraydatos=JSON.parse(response); 
 					JSONproductosNube=arraydatos.productos;
 					JSONcategoriasNube=arraydatos.categorias;
-					//JSONclientesNube=arraydatos.clietes;
+					JSONclientesNube=arraydatos.clientes;
+					$("#JSONclientesNube").html(JSONclientesNube);
+					console.log(arraydatos);
 					//JSONcajasNube=arraydatos.cajas;
 					$("#JSONCategoriasNube").html(JSONcategoriasNube);
 					$("#JSONproductosNube").html(JSONproductosNube);

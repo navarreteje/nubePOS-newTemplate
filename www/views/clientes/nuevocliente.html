@@ -1,121 +1,82 @@
 ﻿<style > .clientesInput{ width:100%;} </style>
 <div align="center">
-<div class="row" style="width:95%;">
-	<div class="col-md-1"></div>
-	<div class="col-md-10" align="left">
-		<br/>
-		<div class="row"> 
-			<div class="col-md-6">
-				<h4>Nombres y Apellidos(*)</h4>
-				<input class="form-control clientesInput" placeHolder="Ingrese aquí sus nombres" id="nombrecliente"/>
-			</div>
-			<div class="col-md-6">
-				<h4>Email(*)</h4>
-				<input class="form-control clientesInput" placeHolder="Ingrese su Email" id="email"/>
-			</div>
-		</div>
-		<br/>
-		<div class="row"> 
-			<div class="col-md-6">
-				<h4>Número de Cédula(*)</h4>
-				<input class="form-control clientesInput"  placeHolder="Ingrese aquí su número de cédula" id="cedulacliente" />
-			</div>
-			<div class="col-md-6">
-				<h4>Número de Télefono (<small>Opcional</small>)</h4>
-				<input class="form-control clientesInput" id="telefono"/>
-			</div>
-		</div>
-		<br/>
-		<div class="row"> 
-			<div class="col-md-12">
+	<div class="row" style="width:95%;">
+		<div class="col-md-1"></div>
+		<div class="col-md-10" align="left">
+			<br/>
+			<div class="row"> 
+				<div class="col-md-12">
+					<h4>Nombres y Apellidos(*)</h4>
+							<input style='display:none;' id='idcliente' name='idcliente'/>
+					<input class="form-control clientesInput" placeHolder="Ingrese aquí sus nombres" id="nombrecliente"/>
+					<h4>Número de Cédula(*)</h4>
+					<input class="form-control clientesInput"  placeHolder="Ingrese aquí su número de cédula" id="cedulacliente" />
+					<h4>Email(*)</h4>
+					<input class="form-control clientesInput" placeHolder="Ingrese su Email" id="email"/>
+					<h4>Número de Télefono (<small>Opcional</small>)</h4>
+					<input class="form-control clientesInput" id="telefono"/>
 					<h4> Dirección (<small>Opcional</small>)</h4>
-				<input class="form-control clientesInput" id="direccion"/>
-			</div>
+					<input class="form-control clientesInput" id="direccion"/>
+					<br/>
+					<iframe style="border:0px;padding:0px;margin:0px;width:200px;height:150px;overflow:hidden;" src="https://www.practisis.net/nubePOS-APIS/uploadImage.php" ></iframe>
+					<br/>
+					<button id="guardar" class="btn btn-primary btn-md" type="button" onclick="GuardaCliente();">Guardar</button>
+				
+				</div>
 			
-		</div>
-		<br/>
-		<div class="row" >
-			
-			<div class="col-md-10" align="left"> 
-				<button id="guardar" class="btn btn-primary btn-md" type="button" onclick="GuardaCliente();">Guardar</button>
 			</div>
-			<div class="col-md-2" align="left"> </div>
-		</div>
-		<div class="row"	>
-			<div class="col-md-12"	>
-				<div id='jsalert' style='display:none;' class="alert alert-danger" role="alert" style='font-size:12px;'></div>
-				<input style='display:none;' id='idcliente' name='idcliente'/>
-			</div>
+			<br/>
 		</div>
 	</div>
-	<div class="col-md-1"></div>
-</div>
-</div>
-<div id="mainDiv" style="margin: 0px; padding: 0px; width:100%; height: 800px; background-color: #ffffff; font-size:14px; color:#404041;">
-<!--
-		<table style="width:100%;" border="0" cellpadding='10px' class='table table-striped'>
-			<tr><td colspan='3'><h3 id='titulocliente'>Nuevo Cliente</h3></td></tr>		
-			<tr>
-			<td style="text-align:center; vertical-align:middle;">
-			<table style='width:100%; font-size:13px; text-align:center;' class='table'>
-				<tbody>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<input style='display:none;' id='idcliente' name='idcliente'/>
-							<input class="form-control" type="text" autofocus=""  placeholder="Apellido y Nombre(*)" name='nombrecliente' id='nombrecliente'>
-						</td>
-					</tr>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<input class="form-control" type="number" autofocus=""  placeholder="Cédula(*)" name='cedulacliente' id='cedulacliente'>
-						</td>
-					</tr>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<input class="form-control" type="number" autofocus=""  placeholder="Teléfono" name='telefono' id='telefono' onkeypress="return soloNumerosprecio(event);" maxlength='10'>
-						</td>
-					</tr>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<input class="form-control" type="text" autofocus=""  placeholder="Dirección" id="direccion" name="direccion"/>
-						</td>
-					</tr>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<input class="form-control" type="text" autofocus=""  placeholder="Email(*)" id="email" name="email"/>
-						</td>
-					</tr>
-					<tr>
-						<td style='vertical-align:middle;'>
-							<button id='guardar' class="btn btn-primary btn-md" type='button' onclick='GuardaCliente();'>Guardar</button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div id='jsalert' style='display:none;' class="alert alert-danger" role="alert" style='font-size:12px;'></div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			</td>
-			</tr>
-		</table>-->
 </div>
 
+
 <script>
+//$("input").val("");
+
+if(editarClientesID){
+	$("#guardar").html("Actualizar");
+	var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
+	db.transaction(function(tx){
+	tx.executeSql('SELECT * FROM CLIENTES WHERE id=?',[editarClientesID],function(tx,results){
+		//console.log(results);
+		var inhtml='';
+		var inhtml2='';
+		for (var i=0; i < results.rows.length; i++){
+			var row = results.rows.item(i);
+			$("#nombrecliente").val(row.nombre);
+			$("#cedulacliente").val(row.cedula);
+			$("#email").val(row.email);
+			$("#direccion").val(row.direccion);
+			$("#telefono").val(row.telefono);
+		}
+		});
+	},errorCB,successCB);
+	
+}else{
+	
+	$("#nombrecliente").val('');
+			$("#cedulacliente").val('');
+			$("#email").val('');
+			$("#direccion").val('');
+			$("#telefono").val('');
+}
 function GuardaCliente(){
-	if($('#idcliente').val()==''||$('#idcliente').val()==0){
+	if(!editarClientesID){
 	var nombrep=$('#nombrecliente').val();
 	var cedulap=$('#cedulacliente').val();
 	var telefonop=$('#telefono').val();
 	var direccionp=$('#direccion').val();
 	var emailp=$('#email').val();
+	timespanCliente=getTimeSpan();
 	if(nombrep!=''&&cedulap!=''&&emailp!=''){
 		var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
 			db.transaction(function(tx){
-			tx.executeSql('INSERT INTO CLIENTES(nombre,telefono,direccion,email,cedula,existe) SELECT "'+nombrep+'","'+telefonop+'","'+direccionp+'","'+emailp+'","'+cedulap+'",0 WHERE NOT EXISTS(SELECT 1 FROM CLIENTES WHERE nombre = "'+nombrep+'" or cedula="'+cedulap+'" or email="'+emailp+'" );',[],function(tx,results){
+			tx.executeSql('INSERT INTO CLIENTES(nombre,telefono,direccion,email,cedula,existe,timespan) SELECT "'+nombrep+'","'+telefonop+'","'+direccionp+'","'+emailp+'","'+cedulap+'",0 , "'+timespanCliente+'" WHERE NOT EXISTS(SELECT 1 FROM CLIENTES WHERE nombre = "'+nombrep+'" or cedula="'+cedulap+'" or email="'+emailp+'"  );',[],function(tx,results){
 				console.log("cliente:"+results.insertId);
 				});
+				$("input").val(" ");
+				alerta("Cliente Guardado con exito");
 			},errorCB,successCB);
 	}else{
 		alerta("Por favor complete los datos requeridos(*).");
@@ -126,10 +87,12 @@ function GuardaCliente(){
 	}else{
 		ActualizarCliente();
 	}
+	
 }
 
 function ActualizarCliente(){
-	var idcliente=$('#idcliente').val();
+	var idcliente=editarClientesID;
+	editarClientesID=false;
 	var nombrep=$('#nombrecliente').val();
 	var telefonop=$('#telefono').val();
 	var emailp=$('#email').val();
@@ -142,6 +105,8 @@ function ActualizarCliente(){
 				console.log("cliente:"+idcliente);
 				VerDatosCliente(idcliente);
 				alerta("Datos actualizados con éxito.");
+				
+				envia("listadeclientes");
 				/*$('#jsalert').html("Datos actualizados con éxito.");
 				setTimeout(function(){$('#jsalert').effect('highlight',{color:'white'},1000);},500);
 				setTimeout(function(){$('#jsalert').fadeOut('slow');},4000);*/

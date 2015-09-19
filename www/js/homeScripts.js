@@ -1,4 +1,5 @@
 var editarProductoID;
+var editarClientesID;
 function alerta(text){
 	$("#message").html(text);
 	$( "body" ).animate( { scrollTop : 0});
