@@ -614,7 +614,7 @@ function formarCategorias(){
 						selected = 'categoriaActiva';
 						categoriaSelected = row.timespan;
 					}
-					$('#contenidoCategorias').append('<div id="categoria_'+ row.id +'" class="esCategoria '+ selected +'" onclick="ActivarCategoria(this,'+ row.timespan +'); PlaySound(5);">'+ (row.categoria).substring(0,15) +'</div>');
+					$('#contenidoCategorias').append('<div id="categoria_'+ row.timespan +'" class="esCategoria '+ selected +'" onclick="ActivarCategoria(this,'+ row.timespan +'); PlaySound(5);">'+ (row.categoria).substring(0,15) +'</div>');
 				}
 				objcategoria=$('#categoria_'+categoriaSelected)[0];
 				console.log(objcategoria);
@@ -1019,7 +1019,36 @@ function ColocarFormasPago(){
 	}*/
 }
 
-
+function BuscarCliente(e){
+	var valor=$('#busquedacliente').val();
+	if(e==13){
+		mostrarClientes();
+		var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
+		db.transaction(
+		function (tx){
+			tx.executeSql('SELECT * FROM CLIENTES WHERE cedula=?;',[valor],
+			function(tx,res){
+				if(res.rows.length>0){
+					console.log(res);
+					var row=res.rows.item(0);
+					entro=true;
+					$('#idCliente').val(row.id);
+					$('#clientID').val(row.id);
+					$('#nombreP').val(row.nombre);
+					$('#clientefind').html(row.nombre);
+					$('#cedulaP').val(row.cedula);
+					$('#telefonoP').val(row.telefono);
+					$('#direccionP').val(row.direccion);
+					$('#emailP').val(row.email);
+					$('#payClientName').html(row.nombre);
+					$('.tipoClienteP').val(1);
+					if($('#insideShop').length > 0){
+						continueShopping(row.id);
+					}
+			}});	
+		},errorCB,successCB);
+	}
+}
 function AbrirCaja(){
 	/*$('#jsoncaja').html('{"caja":[{"idCaja":"12","open":"1"}]}');*/
 	var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
@@ -1138,6 +1167,7 @@ function ElegirDenominacion(cual){
 function Init3(){
 	var h=$(window).height();
 	var w=$(window).width();
+	console.log(h);
 	$('#central').height(h);
 	if(h/w>=0.725) vertical=true;
 	else vertical=false;

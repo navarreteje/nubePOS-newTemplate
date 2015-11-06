@@ -1,3 +1,6 @@
+.modal-backdrop{
+	z-index:0;
+}
 .buscador{
 	text-align:left;
 	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.47) 98%, rgba(184,184,184,0.46) 100%); /* FF3.6+ */
@@ -715,7 +718,7 @@ margin-top:10px;
 	
 	.cuadroClientes{
 		z-index:901;
-		width:60%;
+		width:100%;
 		padding-bottom:15px;
 		height:380px;
 		overflow:hidden; 
@@ -727,6 +730,7 @@ margin-top:10px;
 		text-align:left;
 		padding:0px;
 		text-align:center;
+		left:0px;
 	}
 	
 	.camposcolor{

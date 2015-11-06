@@ -2155,11 +2155,7 @@ function mostrarClientes(){
 					<div style="background:linear-gradient(to bottom, #EF4331 0%, #BD222F 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);height: 40px;color: #FFFFFF;font-size: 20px;line-height: 40px;">\
 						Cliente\
 					</div> \
-					<div style="position:relative;">\
-						<label class="equisPop" onclick="noCliente();" style="position:absolute; right:1%; top:-30px; color:red; cursor:pointer;" >\
-							<img src="images/xcierre.png" width="22" height="22" style="border: 0" alt="">\
-						</label> \
-					</div>\
+					<button type="button" style="color:white; margin-right:5px; position:absolute; top:10px; right:12px; cursor:pointer;" class="close" onclick="noCliente();" aria-label="Close"><span aria-hidden="true">x</span></button>\
 					<table id="descripcionD" width="100%" > \
 						<tr> \
 							<td colspan=2>\
@@ -2167,7 +2163,7 @@ function mostrarClientes(){
 									<table cellpadding="0" cellspacing="0" width="70%" style="position: relative;margin: 0px auto;">\
 										<tr>\
 											<td width="10%" class="camposcolor">\
-												<img src="images/imgcedula.png" width="13" style="border: 0;" alt="">\
+												<span class="glyphicon glyphicon-triangle-right"></span>\
 													&nbsp;Cédula* \
 											</td>\
 												<td class="valorcolor">\
@@ -2176,7 +2172,7 @@ function mostrarClientes(){
 										</tr>\
 										<tr>\
 											<td width="20%" class="camposcolor">\
-												<img src="images/user.png" width="13" style="border: 0;" alt="">\
+												<span class="glyphicon glyphicon-triangle-right"></span>\
 													&nbsp;Nombre*\
 											</td>\
 											<td width="70%" class="valorcolor">\
@@ -2186,7 +2182,7 @@ function mostrarClientes(){
 										\
 										<tr>\
 												<td width="20%" class="camposcolor">\
-													<img src="images/imgtelefono.png" style="border: 0;" alt="">\
+													<span class="glyphicon glyphicon-triangle-right"></span>\
 													&nbsp;Teléfono\
 												</td>\
 												<td width="70%" class="valorcolor">\
@@ -2195,7 +2191,7 @@ function mostrarClientes(){
 										</tr>\
 										<tr>\
 												<td width="20%" class="camposcolor">\
-													<img src="images/imgdireccion.png" style="border:0;" alt="">&nbsp;Dirección\
+													<span class="glyphicon glyphicon-triangle-right"></span>&nbsp;Dirección\
 												</td>\
 												<td width="70%" class="valorcolor">\
 													<input tabindex="4" style="width:100%;" id="direccionP" class="valor"/> \
@@ -2203,7 +2199,7 @@ function mostrarClientes(){
 										</tr>\
 										<tr>\
 												<td width="20%" class="camposcolor">\
-													<img src="images/imgemal.png" width="13" style="border: 0;" alt="">\
+													<span class="glyphicon glyphicon-triangle-right"></span>\
 													&nbsp;Email\
 												</td>\
 												<td width="70%" class="valorcolor">\

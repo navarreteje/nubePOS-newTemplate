@@ -1,13 +1,14 @@
-﻿	<html class="ui-mobile">
+﻿	<!DOCTYPE html>
+	<html class="ui-mobile">
 		<head>
 <!--			<base href="http://demos.jquerymobile.com/1.4.2/navbar/">-->
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 			<title>NubePOS</title>
-			<link rel="stylesheet" href="css/templateCss.css" />
+			<!--<link rel="stylesheet" href="css/templateCss.css" />-->
 			<link rel="stylesheet" href="stylesheets/jquery.sidr.light.css">
 			<link rel="shortcut icon" href="favicon.ico">
-			<link rel="stylesheet" href="css/bootstrap.min.css">
+			<!---<link rel="stylesheet" href="css/bootstrap.min.css">-->
 			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 			<!--<link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css">
 			<link rel="stylesheet" href="css/jqm-demos.css">-->
@@ -51,29 +52,29 @@
 	</head>
 	<body class="ui-mobile-viewport ui-overlay-a" id="ui-page-top">
 		
-		 		<header class="header">
-			<div id="mobile-header">
+		 	<header class="header">
+			<!--<div id="mobile-header">
 				<a id="responsive-menu-button" href="#sidr-main">Menu </a> 
-			</div>
+			</div>-->
 			
 				
-			<img src="img/logo.png" />
-			<a id="simple-menu" href="#sidr">Toggle menu</a>
+			<img src="img/logo.png"/>
+			<a id="simple-menu" href="#sidr"><button class='btn btn-lg btn-default'><span class='glyphicon glyphicon-menu-hamburger'></span></button></a>
 		
 			<div id="sidr" style="z-index:99999999999999;">
 			  <!-- Your content -->
 			  <ul>
 			  	
-				<li onclick="envia('dashboard')" ><a href="javascript:void(0);" >Resumen</a></li>
-				<li onclick="envia('puntodeventa')" ><a href="javascript:void(0);">Punto de Venta</a></li>
-				<li onclick="envia('historial')"><a href="#">Historial de Ventas</a></li>
-				<li onclick="envia('nuevoproducto')"><a href="javascript:void(0);">Nuevo Producto</a></li>
-				<li onclick="envia('listaproductos')" ><a>Lista de productos</a></li>
-				<li onclick="envia('nuevocliente')" ><a href="javascript:void(0);"  href="javascript:void(0);" >Nuevo Cliente</a></li>
-				<li onclick="envia('listadeclientes')"><a href="javascript:void(0);">Lista de Clientes</a></li>
-				<li onclick="envia('inventario')"><a href="javascript:void(0);">Inventario</a></li>
-				<li onclick="envia('cloud')"  class="active"><a href="javascript:void(0);">Cloud</a></li>
-				<li onclick="envia('0')" ><a href="javascript:void(0);">Cerrar Sesión</a></li>
+				<li onclick="envia('dashboard')" ><a href="javascript:void(0);" ><span style='display:inline;' class='glyphicon glyphicon-signal'></span>Resumen</a></li>
+				<li onclick="envia('puntodeventa')" ><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-usd'></span>Punto de Venta</a></li>
+				<li onclick="envia('historial')"><a href="#"><span style='display:inline;' class='glyphicon glyphicon-th-list'></span>Historial de Ventas</a></li>
+				<li onclick="envia('nuevoproducto')"><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-barcode'></span>Nuevo Producto</a></li>
+				<li onclick="envia('listaproductos')" ><a><span style='display:inline;' class='glyphicon glyphicon-th-list'></span>Lista de productos</a></li>
+				<li onclick="envia('nuevocliente')" ><a href="javascript:void(0);"  href="javascript:void(0);" ><span style='display:inline;' class='glyphicon glyphicon-user'></span>Nuevo Cliente</a></li>
+				<li onclick="envia('listadeclientes')"><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-th-list'></span>Lista de Clientes</a></li>
+				<li onclick="envia('inventario')"><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-book'></span>Inventario</a></li>
+				<li onclick="envia('cloud')"  class="active"><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-cloud'></span>Cloud</a></li>
+				<li onclick="envia('0')" ><a href="javascript:void(0);"><span style='display:inline;' class='glyphicon glyphicon-off'></span>Cerrar Sesión</a></li>
 				
 			  </ul>
 			</div>

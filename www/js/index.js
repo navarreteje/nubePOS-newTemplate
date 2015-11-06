@@ -1,5 +1,3 @@
-
-	
 	onDeviceReady();
    function onDeviceReady(){
         //alert("listo");
@@ -13,7 +11,7 @@
     //
     
     function iniciaDB(tx){
-        console.log("Ana");
+        //console.log("Ana");
         var db = window.openDatabase("Database", "1.0", "PractisisMobile", 200000);
         //tx.executeSql('DROP TABLE IF EXISTS PRODUCTOS');
         tx.executeSql('CREATE TABLE IF NOT EXISTS PRODUCTOS (id_local integer primary key AUTOINCREMENT,id integer, formulado text, codigo text, precio real, categoriaid integer,cargaiva integer,productofinal integer,materiaprima integer,timespan integer,ppq real default 0)');
